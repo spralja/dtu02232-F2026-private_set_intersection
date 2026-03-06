@@ -108,15 +108,6 @@ source = "registry+https://github.com/rust-lang/crates.io-index"
 checksum = "6800badb6cb2082ffd7b6a67e6125bb39f18782f793520caee8cb8846be06112"
 
 [[package]]
-name = "mpc-project"
-version = "0.1.0"
-dependencies = [
- "curve25519-dalek",
- "rand",
- "sha2",
-]
-
-[[package]]
 name = "ppv-lite86"
 version = "0.2.21"
 source = "registry+https://github.com/rust-lang/crates.io-index"
@@ -132,6 +123,15 @@ source = "registry+https://github.com/rust-lang/crates.io-index"
 checksum = "8fd00f0bb2e90d81d1044c2b32617f68fcb9fa3bb7640c23e9c748e53fb30934"
 dependencies = [
  "unicode-ident",
+]
+
+[[package]]
+name = "psi"
+version = "0.1.0"
+dependencies = [
+ "curve25519-dalek",
+ "rand",
+ "sha2",
 ]
 
 [[package]]
