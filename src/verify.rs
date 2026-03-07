@@ -1,5 +1,5 @@
-use std::collections::HashSet;
 use crate::types::Element;
+use std::collections::HashSet;
 
 pub fn verify_intersection(
   X: &Vec<Element>,

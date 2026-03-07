@@ -65,7 +65,8 @@ pub struct Message3 {
 
 impl ServerState1 {
   pub fn respond(self, message: Message2) -> (ServerState3, Message3) {
-    let T: Vec<RistrettoPoint> = message.theta.iter().map(|t| t * self.alpha).collect();
+    let T: Vec<RistrettoPoint> =
+      message.theta.iter().map(|t| t * self.alpha).collect();
 
     let new_message = Message3 { T: T.clone() };
     let new_server_state = ServerState3 {
