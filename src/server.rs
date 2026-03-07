@@ -1,11 +1,10 @@
 use crate::client::Message2;
-use crate::protocol::{hash_to_group, hash_from_group};
+use crate::protocol::{hash_from_group, hash_to_group};
 use crate::types::{Bytes, Element};
 
-use curve25519_dalek::scalar::Scalar;
 use curve25519_dalek::ristretto::RistrettoPoint;
+use curve25519_dalek::scalar::Scalar;
 use rand::{rngs::OsRng, seq::SliceRandom};
-
 
 pub struct ServerStateInit {
   pub X: Vec<Element>,
@@ -27,7 +26,8 @@ impl ServerStateInit {
     let mut rng = OsRng;
 
     let alpha = Scalar::random(&mut rng);
-    let omega: Vec<Bytes<32>> = self.X
+    let omega: Vec<Bytes<32>> = self
+      .X
       .iter()
       .map(|x| hash_from_group(&(hash_to_group(x) * alpha)))
       .collect();
@@ -37,10 +37,15 @@ impl ServerStateInit {
       tmp.shuffle(&mut rng);
       tmp
     };
-    
+
     let new_message = Message1 { L: L.clone() };
-    let new_state = ServerState1 { X: self.X, alpha, omega, L };
-    
+    let new_state = ServerState1 {
+      X: self.X,
+      alpha,
+      omega,
+      L,
+    };
+
     (new_state, new_message)
   }
 }
@@ -60,19 +65,16 @@ pub struct Message3 {
 
 impl ServerState1 {
   pub fn respond(self, message: Message2) -> (ServerState3, Message3) {
-    let T: Vec<RistrettoPoint> = message.theta
-      .iter()
-      .map(|t| t * self.alpha)
-      .collect();
-    
-    let new_message = Message3 {T: T.clone() };
+    let T: Vec<RistrettoPoint> = message.theta.iter().map(|t| t * self.alpha).collect();
+
+    let new_message = Message3 { T: T.clone() };
     let new_server_state = ServerState3 {
-      X: self.X, 
+      X: self.X,
       alpha: self.alpha,
       omega: self.omega,
       L: self.L,
       theta: message.theta,
-      T
+      T,
     };
 
     (new_server_state, new_message)

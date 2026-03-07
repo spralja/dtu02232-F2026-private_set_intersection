@@ -1,11 +1,10 @@
-use crate::protocol::{hash_to_group, hash_from_group};
+use crate::protocol::{hash_from_group, hash_to_group};
 use crate::server::{Message1, Message3};
 use crate::types::{Bytes, Element};
 
-use curve25519_dalek::scalar::Scalar;
 use curve25519_dalek::ristretto::RistrettoPoint;
+use curve25519_dalek::scalar::Scalar;
 use rand::rngs::OsRng;
-
 
 pub struct ClientStateInit {
   pub Y: Vec<Element>,
@@ -27,19 +26,25 @@ impl ClientStateInit {
     let mut rng = OsRng;
 
     let m = message.L.len();
-    
-    let beta: Vec<Scalar> = (0..m)
-      .map(|_| Scalar::random(&mut rng))
-      .collect();
 
-    let theta: Vec<RistrettoPoint> = self.Y
+    let beta: Vec<Scalar> = (0..m).map(|_| Scalar::random(&mut rng)).collect();
+
+    let theta: Vec<RistrettoPoint> = self
+      .Y
       .iter()
       .zip(beta.iter())
       .map(|(y, b)| hash_to_group(y) * b)
       .collect();
-    
-    let new_message = Message2 { theta: theta.clone() };
-    let new_state = ClientState2 { Y: self.Y, L: message.L, beta, theta };
+
+    let new_message = Message2 {
+      theta: theta.clone(),
+    };
+    let new_state = ClientState2 {
+      Y: self.Y,
+      L: message.L,
+      beta,
+      theta,
+    };
 
     (new_state, new_message)
   }
@@ -47,13 +52,14 @@ impl ClientStateInit {
 
 impl ClientState2 {
   pub fn complete(self, message: Message3) -> Vec<Element> {
-    let I: Vec<Element> = message.T
-    .iter()
-    .zip(self.beta.iter())
-    .map(|(t, b)| self.L.contains(&hash_from_group(&(t * b.invert()))))
-    .zip(self.Y.iter())
-    .filter_map(|(i, y)| if i { Some(y.clone()) } else { None })
-    .collect();
+    let I: Vec<Element> = message
+      .T
+      .iter()
+      .zip(self.beta.iter())
+      .map(|(t, b)| self.L.contains(&hash_from_group(&(t * b.invert()))))
+      .zip(self.Y.iter())
+      .filter_map(|(i, y)| if i { Some(y.clone()) } else { None })
+      .collect();
 
     I
   }

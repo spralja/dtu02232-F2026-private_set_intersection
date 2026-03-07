@@ -5,11 +5,7 @@ use crate::types::Element;
 use std::sync::mpsc;
 use std::thread;
 
-
-pub fn run_threaded(
-  server_set: Vec<Element>,
-  client_set: Vec<Element>
-) -> Vec<Element> {
+pub fn run_threaded(server_set: Vec<Element>, client_set: Vec<Element>) -> Vec<Element> {
   let (server_to_client1_tx, server_to_client1_rx) = mpsc::channel();
   let (client_to_server2_tx, client_to_server2_rx) = mpsc::channel();
   let (server_to_client3_tx, server_to_client3_rx) = mpsc::channel();
