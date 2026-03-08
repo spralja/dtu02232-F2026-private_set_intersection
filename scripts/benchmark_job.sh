@@ -10,6 +10,4 @@
 
 cd $HOME/dev/DTU/AC/mpc-project/
 
-COMMIT=$(git rev-parse --short HEAD)
-
-./experiments/psi/benchmark_$COMMIT $LSB_JOBINDEX
+echo "$COMMIT, $(./experiments/psi/benchmark_$COMMIT $LSB_JOBINDEX)"
