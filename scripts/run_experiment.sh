@@ -14,6 +14,7 @@ COMMIT=$(git rev-parse --short HEAD)
 mkdir -p experiments/$EXPERIMENT_NAME/outputs
 mkdir -p experiments/$EXPERIMENT_NAME/errors
 mkdir -p experiments/$EXPERIMENT_NAME/bin
+mkdir -p experiments/$EXPERIMENT_NAME/results
 
 # Build release binary
 cargo build --release --bin benchmark
@@ -25,4 +26,4 @@ cp target/release/benchmark experiments/$EXPERIMENT_NAME/bin/benchmark_$COMMIT
 export COMMIT
 
 # Submit job array
-bsub -env "COMMIT=$COMMIT" < scripts/benchmark_job.sh
+bsub -env "COMMIT=$COMMIT,EXPERIMENT_NAME=$EXPERIMENT_NAME" < scripts/benchmark_job.sh

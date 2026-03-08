@@ -10,4 +10,4 @@
 
 cd $HOME/dev/DTU/AC/mpc-project/
 
-echo "$COMMIT,$(./experiments/psi/bin/benchmark_$COMMIT $LSB_JOBINDEX)"
+echo "$COMMIT,$(./experiments/$EXPERIMENT_NAME/bin/benchmark_$COMMIT $LSB_JOBINDEX)" > experiments/$EXPERIMENT_NAME/results/${LSB_JOBINDEX}.csv
