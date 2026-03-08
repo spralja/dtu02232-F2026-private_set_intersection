@@ -9,7 +9,13 @@ use rand::rngs::StdRng;
 use rand::seq::SliceRandom;
 use rand::{RngCore, SeedableRng};
 
+const SALT: u64 = 0xb1bc77cc4ae2bd04;
 const REPS: usize = 10;
+
+const X_SIZES: [usize; 5] = [1, 4, 16, 64, 256];
+const Y_SIZES: [usize; 5] = [4, 16, 64, 256, 1024];
+const I_SIZES: [usize; 5] = [1, 4, 16, 64, 256];
+
 
 fn time_protocol(X: Vec<Element>, Y: Vec<Element>) -> f64 {
   let X_copy = X.clone();
@@ -52,38 +58,67 @@ fn shuffle_together(
   v
 }
 
+fn config(index: usize) -> (usize, usize, usize) {
+  let mut v: Vec<(usize, usize, usize)> = Vec::new();
+
+  for &x_size in &X_SIZES {
+    for &y_size in &Y_SIZES {
+      for &i_size in &I_SIZES {
+        if i_size <= x_size && i_size <= y_size && x_size <= y_size {
+          v.push((x_size, y_size, i_size));
+        }
+      }
+    }
+  }
+
+  v[index - 1]
+}
+
 fn main() {
-  // BEGIN AI-GENERATED (ChatGPT)
-  // CLI arguments: x_size y_size intersection_size seed
+  let NUM_CONFIGS: usize = {
+    let mut n = 0;
+    for &x_size in &X_SIZES {
+      for &y_size in &Y_SIZES {
+        for &i_size in &I_SIZES {
+          if i_size <= x_size && i_size <= y_size && x_size <= y_size {
+            n += 1;
+          }
+        }
+      }
+    }
+
+    n
+  };
+
   // the X, Y, I sets are based on seeded arguments, but the protocol is not!
   let args: Vec<String> = env::args().collect();
 
-  if args.len() != 5 {
-    eprintln!("Usage: benchmark <x_size> <y_size> <intersection_size> <seed>");
+  if args.len() != 2 {
+    eprintln!("Usage: benchmark <LSF_INDEX>");
     std::process::exit(1);
   }
 
-  let x_size: usize = args[1].parse().expect("invalid x_size");
-  let y_size: usize = args[2].parse().expect("invalid y_size");
-  let intersection_size: usize =
-    args[3].parse().expect("invalid intersection_size");
-  let seed: u64 = args[4].parse().expect("invalid seed");
+  let index: usize = args[1].parse().expect("invalid LSF_INDEX");
 
-  // END AI-GENERATED
+  assert!(index >= 1 && index <= NUM_CONFIGS, "index must be in [1, {}]", NUM_CONFIGS);
+
+  let (x_size, y_size, i_size) = config(index);
+
+  let seed: u64 = SALT ^ index as u64;
 
   let mut rng = StdRng::seed_from_u64(seed);
 
-  let I = random_vector(intersection_size, &mut rng);
+  let I = random_vector(i_size, &mut rng);
 
   let X = shuffle_together(
     I.clone(),
-    random_vector(x_size - intersection_size, &mut rng),
+    random_vector(x_size - i_size, &mut rng),
     &mut rng,
   );
 
   let Y = shuffle_together(
     I.clone(),
-    random_vector(y_size - intersection_size, &mut rng),
+    random_vector(y_size - i_size, &mut rng),
     &mut rng,
   );
 
@@ -101,6 +136,6 @@ fn main() {
 
   println!(
     "{},{},{},{},{},{}",
-    x_size, y_size, intersection_size, seed, mean_ms, stddev_ms
+    index, x_size, y_size, i_size, mean_ms, stddev_ms
   );
 }
