@@ -65,8 +65,12 @@ pub struct Message3 {
 
 impl ServerState1 {
   pub fn respond(self, message: Message2) -> (ServerState3, Message3) {
+    let mut rng = OsRng;
+
+    let alpha_prime = Scalar::random(&mut rng);
+
     let T: Vec<RistrettoPoint> =
-      message.theta.iter().map(|t| t * self.alpha).collect();
+      message.theta.iter().map(|t| t * alpha_prime).collect();
 
     let new_message = Message3 { T: T.clone() };
     let new_server_state = ServerState3 {
