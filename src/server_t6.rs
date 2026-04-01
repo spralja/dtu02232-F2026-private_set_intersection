@@ -68,6 +68,7 @@ pub struct ServerState3 {
   pub T: Vec<RistrettoPoint>,
 }
 
+#[derive(Clone)]
 pub struct Message3 {
   pub T: Vec<RistrettoPoint>,
   pub pi: (RistrettoPoint, Vec<RistrettoPoint>, Scalar),
