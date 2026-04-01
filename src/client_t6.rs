@@ -56,7 +56,10 @@ impl ClientStateInit {
 
 impl ClientState2 {
   pub fn complete(self, message: Message3) -> Vec<Element> {
-    assert!(verify(self.clone(), message.clone()), "The verify algorithm failed, aborting");
+    assert!(
+      verify(self.clone(), message.clone()),
+      "The verify algorithm failed, aborting"
+    );
     let I: Vec<Element> = message
       .T
       .iter()

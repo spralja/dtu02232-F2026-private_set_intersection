@@ -1,5 +1,5 @@
-use crate::client::ClientStateInit;
-use crate::server::ServerStateInit;
+use crate::client_t6::ClientStateInit;
+use crate::server_t6::ServerStateInit;
 use crate::types::Element;
 
 use std::sync::mpsc;
