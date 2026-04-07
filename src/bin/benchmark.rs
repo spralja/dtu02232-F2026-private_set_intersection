@@ -66,7 +66,7 @@ fn config(index: usize) -> (usize, usize, usize) {
   for &x_size in &X_SIZES {
     for &y_size in &Y_SIZES {
       for &i_size in &I_SIZES {
-        if i_size <= x_size && i_size <= y_size && x_size <= y_size {
+        if i_size <= x_size && i_size <= y_size && x_size >= y_size {
           v.push((x_size, y_size, i_size));
         }
       }
