@@ -31,6 +31,13 @@ The client:
 - Rust toolchain with Cargo
 - A recent stable compiler that supports **edition 2024**
 
+
+## Run the tests
+```bash
+cargo test
+
+```
+
 ## Run the existing benchmark examples
 
 ```bash
