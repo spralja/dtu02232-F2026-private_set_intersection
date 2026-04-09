@@ -77,20 +77,21 @@ pub struct Message3 {
 
 impl ServerState1 {
   pub fn respond(self, message: Message2) -> (ServerState3, Message3) {
-    // to run normally, just comment this part out and use self.alpha instead
-    let mut rng = OsRng;
-    let alpha_prime = Scalar::random(&mut rng);
+    // to run with the attack, just un-comment this part out and use alpha_prime 
+    // instead of self.alpha
+    // let mut rng = OsRng;
+    // let alpha_prime = Scalar::random(&mut rng);
 
     let malicious_server_state = ServerState1 {
       X: self.X.clone(),
-      alpha: alpha_prime,
+      alpha: self.alpha,
       omega: self.omega.clone(),
       L: self.L.clone(),
       R: self.R,
     };
 
     let T: Vec<RistrettoPoint> =
-      message.theta.iter().map(|t| t * alpha_prime).collect();
+      message.theta.iter().map(|t| t * self.alpha).collect();
     let pi: (RistrettoPoint, Vec<RistrettoPoint>, Scalar) =
       prove(malicious_server_state, message.clone());
 
