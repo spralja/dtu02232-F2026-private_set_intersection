@@ -3,6 +3,7 @@
 git switch main
 cargo build --release --bin benchmark
 
+echo "index, x_size, y_size, i_size, mean_ms, stddev_ms"
 for i in {1..100}
 do
   target/release/benchmark $i
@@ -16,6 +17,7 @@ target/release/benchmark 200
 git switch task6
 cargo build --release --bin benchmark
 
+echo "index, x_size, y_size, i_size, mean_ms, stddev_ms"
 for i in {1..10}
 do
   target/release/benchmark $i
