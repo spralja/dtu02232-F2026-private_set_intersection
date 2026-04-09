@@ -1,6 +1,7 @@
+#![allow(non_snake_case)]
 use crate::client_t6::{ClientState2, Message2};
 
-use crate::types::{Bytes, Element};
+use crate::types::{Bytes};
 
 use crate::server_t6::{Message3, ServerState1};
 use curve25519_dalek::constants::RISTRETTO_BASEPOINT_POINT;
