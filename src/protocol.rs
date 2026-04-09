@@ -31,8 +31,15 @@ pub fn prove(
   let mut rng = OsRng;
   let a = Scalar::random(&mut rng);
 
+  // construct A_1 ... A_m and A
   let A_list: Vec<RistrettoPoint> = m2.theta.iter().map(|t| t * a).collect();
   let A = RISTRETTO_BASEPOINT_POINT * a;
+
+  // the next few lines of code simply collect all of A, A_1 ... A_m,
+  // theta_1 ... theta_m, and R into a vector of bytes, then pass that
+  // into H''. It is implemented very efficiently and it would probably
+  // be much faster to pre-allocate the vector, but since this isn't 
+  // benchmarked it doesn't matter.
   let mut e_bytes: Vec<u8> = A.compress().to_bytes().into();
   let mut tmp: Vec<u8> = A_list
     .iter()
@@ -61,6 +68,7 @@ pub fn verify(c2: ClientState2, m3: Message3) -> bool {
   let A_list = m3.pi.1;
   let z = m3.pi.2;
 
+  // this section of code is the same as from prove().
   let mut e_bytes: Vec<u8> = A.compress().to_bytes().into();
   let mut tmp: Vec<u8> = A_list
     .iter()
@@ -82,6 +90,8 @@ pub fn verify(c2: ClientState2, m3: Message3) -> bool {
   let gz = RISTRETTO_BASEPOINT_POINT * z;
 
   let cond1 = gz == A + (c2.R * e);
+  // compare each element of A and T to make sure they
+  // match as expected.
   let cond2 = c2
     .theta
     .iter()

@@ -10,10 +10,13 @@ pub fn run_threaded(
   server_set: Vec<Element>,
   client_set: Vec<Element>,
 ) -> Vec<Element> {
+
+  // set up 3 communication channels for each data exchange
   let (server_to_client1_tx, server_to_client1_rx) = mpsc::channel();
   let (client_to_server2_tx, client_to_server2_rx) = mpsc::channel();
   let (server_to_client3_tx, server_to_client3_rx) = mpsc::channel();
 
+  // run each thread here
   let server_thread = thread::spawn(move || {
     let server_init = ServerStateInit { X: server_set };
 
@@ -38,8 +41,10 @@ pub fn run_threaded(
     client_state2.complete(message3)
   });
 
+  // wait for client_thread to be done
   let result = client_thread.join().unwrap();
 
+  // wait for server_thread to be done
   server_thread.join().unwrap();
 
   result
