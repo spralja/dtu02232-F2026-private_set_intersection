@@ -1,6 +1,6 @@
 # PSI Benchmark Analysis Summary
 
-The report requirement asks for runtime behavior when set sizes vary, especially when increasing |Y| while keeping |X| fixed.
+The runtime behavior when set sizes vary, especially when increasing |Y| while keeping |X| fixed.
 
 ## Data overview
 - Number of measurements: 364
