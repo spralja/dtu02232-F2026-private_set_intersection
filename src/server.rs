@@ -1,3 +1,4 @@
+#![allow(non_snake_case)]
 use crate::client::Message2;
 use crate::protocol::{hash_from_group, hash_to_group};
 use crate::types::{Bytes, Element};

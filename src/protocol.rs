@@ -1,4 +1,4 @@
-use crate::types::{Bytes, Element};
+use crate::types::{Bytes};
 
 use curve25519_dalek::ristretto::RistrettoPoint;
 use sha2::{Digest, Sha256, Sha512};
