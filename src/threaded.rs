@@ -1,3 +1,4 @@
+#![allow(non_snake_case)]
 use crate::client::ClientStateInit;
 use crate::server::ServerStateInit;
 use crate::types::Element;

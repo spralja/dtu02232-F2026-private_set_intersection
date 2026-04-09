@@ -1,4 +1,5 @@
-use crate::types::{Bytes, Element};
+#![allow(non_snake_case)]
+use crate::types::{Bytes};
 
 use curve25519_dalek::ristretto::RistrettoPoint;
 use sha2::{Digest, Sha256, Sha512};
