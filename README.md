@@ -40,9 +40,6 @@ scripts/run_locally.sh
 This benchmark script will automatically switch git branches, compile the correct
 binary, and run the binary over its first 100 test cases before switching to the next
 branch and repeating the process. For task 4, it only runs the binary once to 
-demonstrate that the intersection fails.
-
-For task 6, to see that the verify algorithm outputs 0 if alpha is changed,
-uncomment the code that generates `alpha_prime` in `server_t6.rs` and change 
-all references to `self.alpha` to `alpha_prime` in that function. Re-running
-the benchmark will show that the verify algorithm outputs 0 and the protocol stops.
+demonstrate that the intersection fails. For task6, it only runs the first 10 
+cases since the NIZK proof is very computation-intensive. Finally, for the malicious 
+test of task 6, it only runs once to show that the verify algorithm outputs 0.
